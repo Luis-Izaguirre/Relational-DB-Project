@@ -84,11 +84,7 @@ def index_post_login():
             # resp.set_cookie('sessionid', token.decode("utf-8"))
             return 'login succesful'
         elif existing_user2:
-            # uname1 = existing_user2.name
-            # email = existing_user2.email
-            # token = jwt.encode({'user': uname1, 'mail': email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, app.config['SECRET_KEY'])
-            # resp = make_response(redirect(url_for('index_get_home')))
-            # resp.set_cookie('sessionid', token.decode("utf-8"))
+        
             return 'login succesful'
         else:
             flash('Invalid login credentials', 'error')
