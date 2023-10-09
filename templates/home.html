@@ -1,0 +1,9 @@
+{% extends 'layout.html'%} <!--Template For Logged In Users-->
+
+{% block title %}Home{% endblock %}
+
+<!-- Also '%' allows for operations and inheritence in Jinja Code-->
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, {{ username }}!</p>
+{% endblock %}

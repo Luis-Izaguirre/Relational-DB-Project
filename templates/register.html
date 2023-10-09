@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
-
     <link href='https://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet'>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <title>F.R.I.D.A.Y Cart Registration</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
@@ -97,84 +97,96 @@
 </head>
 
 <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ url_for('home') }}">
+                <h1>CSUN</h1>
+            </a>
+        </div>
 
-   
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a class="navbar-item" href="{{ url_for('register') }}">
+                    Register
+                </a>
+            </div>
+        </div>
+    </nav>
     <section class="section">
-        <div class="container ">
-            <div class="columns ">
+        <div class="container">
+            <div class="columns">
                 <div class="column is-offset-4 is-4">
                     <div class="box">
-                        <form method="POST">
-                            <h1 style="text-align:center;font-size:25px;">Create Account</h1>
-                            <div class="field">
-                                {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                {% for category, message in messages %}
-                                {% set message_class = 'is-success' %}
+                        <form action="{{ url_for('register') }}" method="post" autocomplete="off">
+                            <h1 style="text-align:center;font-size:25px;">Register</h1>
 
-                                {% if category == 'error' %}
-                                {% set message_class = 'is-danger' %}
-                                {% endif %}
-                                <div class="notification {{ message_class }}">{{ message }}</div>
-                                {% endfor %}
-                                {% endif %}
-                                {% endwith %}
-                                <label class="label">Username</label>
+                            <div class="field">
+                                <label class="label" for="username">Username</label>
                                 <div class="control has-icons-left">
-                                    <input class="input" name="uname" type="text" placeholder="Name">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                </div>
-                                <label class="label">First name</label>
-                                <div class="control has-icons-left">
-                                    <input class="input" name="fname" type="text" placeholder="Name">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                </div>
-                                <label class="label">Last name</label>
-                                <div class="control has-icons-left">
-                                    <input class="input" name="lname" type="text" placeholder="Name">
+                                    <input class="input" type="text" name="username" placeholder="Enter your username"
+                                        id="username" required>
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
                                 </div>
                             </div>
+
                             <div class="field">
-                                <label class="label">Email</label>
+                                <label class="label" for="firstname">First Name</label>
+                                <div class="control">
+                                    <input class="input" type="text" name="firstname"
+                                        placeholder="Enter your first name" id="firstname" required>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label" for="lastname">Last Name</label>
+                                <div class="control">
+                                    <input class="input" type="text" name="lastname" placeholder="Enter your last name"
+                                        id="lastname" required>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label" for="email">Email</label>
                                 <div class="control has-icons-left">
-                                    <input class="input " type="email" name="email" placeholder="Email">
+                                    <input class="input" type="email" name="email" placeholder="Enter your email"
+                                        id="email" required>
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-envelope"></i>
                                     </span>
                                 </div>
                             </div>
+
                             <div class="field">
-                                <label class="label">Password</label>
+                                <label class="label" for="password">Password</label>
                                 <div class="control has-icons-left">
-                                    <input class="input " type="password" name="password" placeholder="Password">
+                                    <input class="input" type="password" name="password"
+                                        placeholder="Enter your password" id="password" required>
                                     <span class="icon is-small is-left">
-                                        <i class="fas fa-key"></i>
+                                        <i class="fas fa-lock"></i>
                                     </span>
                                 </div>
-                                <p class="help is-danger">Passwords must be at least 6 characters</p>
                             </div>
 
-                            
-
-                            <div class="field is-grouped">
-                                <div class="control">
-                                    <button class="button is-primary">Sign-Up</button>
-                                </div>
+                            <div class="field">
+                                <div class="msg">{{ msg }}</div>
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">Register</button>
+                                </p>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
+
     <div class="wrapper">
         <img src="https://i.imgur.com/RqxhaDH.png" alt="">
         <div class="content">
@@ -186,7 +198,12 @@
             </div>
         </div>
     </div>
-    
+
+    <script>
+        document.querySelector('.buttons button').addEventListener('click', function () {
+            document.querySelector('.wrapper').classList.add('hide');
+        });
+    </script>
 </body>
 
 </html>

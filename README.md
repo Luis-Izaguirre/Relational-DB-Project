@@ -7,39 +7,71 @@
 
 ```sh
 python3 -m venv env 
-source env/bin/activate or env/Scipts/activate, env is the file name 
+source env/bin/activate  
+./env/Scipts/activate
 ```
 
 ## Installation 
 
+### 1. Install `pkg-config` and MySQL development headers
+
+If you're on a Debian-based system like Ubuntu, you can use `apt`:
+
+```bash
+sudo apt-get install pkg-config libmysqlclient-dev
+```
+
+For Red Hat-based systems like CentOS, use `yum`:
+
+```bash
+sudo yum install pkgconfig mysql-devel
+```
+
+For macOS, you can use Homebrew:
+
+```bash
+brew install pkg-config mysql-client
+```
+
+### 2. specify the `MYSQLCLIENT_CFLAGS` and `MYSQLCLIENT_LDFLAGS` environment variables as suggested in the error message. 
+
+```bash
+export MYSQLCLIENT_CFLAGS=`pkg-config --cflags mysqlclient`
+export MYSQLCLIENT_LDFLAGS=`pkg-config --libs mysqlclient`
+```
+
+### 3. Retry the installation of `mysqlclient`
+
+```bash
+pip install mysqlclient
+```
+
+### 4. If the issue persists, consider using a different MySQL client for Python, such as `PyMySQL`, which is a pure Python MySQL client and doesn't require compiling native code:
+
+```bash
+pip install pymysql
+```
+
 ```sh 
 pip install -r requirements.txt
---------------------------------------
-For the updated second version its:
-bcrypt        4.0.1  
-blinker       1.6.3  
-click         8.1.7  
-colorama      0.4.6  
-Flask         3.0.0  
-Flask-MySQLdb 2.0.0  
-itsdangerous  2.1.2  
-Jinja2        3.1.2  
-MarkupSafe    2.1.3  
-mysqlclient   2.2.0
-pip           23.2.1
-setuptools    65.5.0
-Werkzeug      3.0.0
+
 ```
 
 ## Execution 
 
 ```sh 
-python3 app.py or just flask run. Debug mode: flask --app app --debug run
+python3 app.py 
 ```
 
-## Version2 Files
-app.py
-layout.html
-index.html
-home.html
-style.css
+or (if flask app vairable is already added to env):
+```sh
+flask run
+```
+
+or just . Debug mode: 
+```sh
+flask --app app --debug run
+```
+
+
+
