@@ -33,7 +33,7 @@ For macOS, you can use Homebrew:
 brew install pkg-config mysql-client
 ```
 
-### 2. specify the `MYSQLCLIENT_CFLAGS` and `MYSQLCLIENT_LDFLAGS` environment variables as suggested in the error message. 
+### 2. specify the `MYSQLCLIENT_CFLAGS` and `MYSQLCLIENT_LDFLAGS` environment variables as suggested in the error. 
 
 ```bash
 export MYSQLCLIENT_CFLAGS=`pkg-config --cflags mysqlclient`
