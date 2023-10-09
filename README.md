@@ -1,4 +1,4 @@
-# DBMS Project Team 2
+# DBMS Project Team 3
 
 ## Phase - 1
 - Login System 
