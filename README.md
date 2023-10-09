@@ -36,3 +36,10 @@ Werkzeug      3.0.0
 ```sh 
 python3 app.py or just flask run. Debug mode: flask --app app --debug run
 ```
+
+## Version2 Files
+app.py
+layout.html
+index.html
+home.html
+style.css
