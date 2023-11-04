@@ -6,4 +6,38 @@
 {% block content %}
 <h2>Home Page</h2>
 <p>Welcome back, {{ username }}!</p>
+
+<form method="post" action="">
+    <fieldset>
+        <div class="form-group">
+            <label for="item">Title:</label>
+            <input id="item" name="item" type="text" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input id="description" name="description" type="text" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input id="category" name="category" type="text" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input id="price" name="price" type="text" required>
+        </div>
+    </fieldset>
+    <input type="submit" value="Submit">
+</form>
+
+<form method="post" action="">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">Category:  <input id="search" name="search" type="text" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
 {% endblock %}
