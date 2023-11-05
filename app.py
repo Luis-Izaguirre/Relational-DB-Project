@@ -12,7 +12,7 @@ app.secret_key = "thisissecret"
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] ='root'
-app.config['MYSQL_PASSWORD'] = 'Lambda-3000'
+
 app.config['MYSQL_DB'] = 'com440'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
