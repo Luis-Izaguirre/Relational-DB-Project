@@ -137,22 +137,20 @@ def insert():
         description = request.form['description']
         category = request.form['category']
         price = request.form['price']
-        today = datetime.now().date()
+        username = session['username']
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT COUNT(*) FROM item WHERE user_id = %s AND DATE(date_created) = %s ",(username, datetime.now().date()))
 
-        '''
-        cursor.execute("")
-        and count >= 3
-        '''
-        if session.get('loggedin') :
-            username = session['username']
+        #When using cursor.fetchone() specify that you are using a dictionary by using a specific field you wish to access
+        count = cursor.fetchone()['COUNT(*)']
+        if count < 3:
             cursor.execute('INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)', (item,description,category,price, username))
             mysql.connection.commit()
             msg = 'Form submitted successfully'
 
         else:
-            msg = 'You should be logged into session'
+            msg = 'You have reached you post limit! 3'
     return render_template('home.html', msg=msg)
 
 

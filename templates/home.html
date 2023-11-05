@@ -46,6 +46,24 @@
     <input type="submit" value="Search"/>
 </form>
 
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Price</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.title }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.category }}</td>
+        <td>${{ item.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br><br><br><br><br><br><br><br><br>
+
 <!-- JavaScipt code to control the pop-up -->
 <script>
     //Function to display a successful submission pop-up
