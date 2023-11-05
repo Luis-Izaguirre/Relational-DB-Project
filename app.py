@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -126,10 +128,38 @@ def home():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+# Ensure that you have specified the allowed HTTP method that can be used to access route
+@app.route('/pythonlogin/home/insert', methods=['GET','POST'])
+def insert():
+    msg = ''
+    if request.method == 'POST':
+        item = request.form['item']
+        description = request.form['description']
+        category = request.form['category']
+        price = request.form['price']
+        today = datetime.now().date()
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        '''
+        cursor.execute("")
+        and count >= 3
+        '''
+        if session.get('loggedin') :
+            username = session['username']
+            cursor.execute('INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)', (item,description,category,price, username))
+            mysql.connection.commit()
+            msg = 'Form submitted successfully'
+
+        else:
+            msg = 'You should be logged into session'
+    return render_template('home.html', msg=msg)
+
 
 @app.route('/profile')
 def profile():
     return 'Profile Page'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
