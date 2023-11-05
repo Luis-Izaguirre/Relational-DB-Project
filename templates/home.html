@@ -37,24 +37,25 @@
     <p>{{ msg }}</p>
 </div>
 
-<form action="{{ url_for('home')}}" method="post">
+<form action="{{ url_for('search')}}" method="post">
     <fieldset>
         <div class="form-group">
-            <label for="search">Category:  <input id="search" name="search" type="text" required></label>
+            <label for="search">Category:  <input id="search" type="text" name="search" required></label>
         </div>
     </fieldset>
     <input type="submit" value="Search"/>
 </form>
 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Price</th>
+<div class="container1">
+<table bgcolor="black" width="700" class="centered-table1">
+    <tr bgcolor="grey">
+        <th width="100">Title</th>
+        <th width="100">Description</th>
+        <th width="100">Category</th>
+        <th width="100">Price</th>
     </tr>
     {% for item in items %}
-    <tr>
+    <tr bgcolor="#d3d3d3" align="center">
         <td>{{ item.title }}</td>
         <td>{{ item.description }}</td>
         <td>{{ item.category }}</td>
@@ -62,6 +63,8 @@
     </tr>
     {% endfor %}
 </table>
+</div>
+
 <br><br><br><br><br><br><br><br><br>
 
 <!-- JavaScipt code to control the pop-up -->

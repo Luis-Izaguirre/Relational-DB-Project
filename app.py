@@ -89,7 +89,7 @@ def register():
        cursor.execute('SELECT * FROM user WHERE username = %s', (username,))
        account = cursor.fetchone()
 
-       # if acount exists show error and validation checks------------------------------------------------------------------------------------------------
+       # if acount exists, match values and show error and validation checks------------------------------------------------------------------------------------------------
        if account:
             msg = 'Account already exists!'
        elif not re.match(r'^[^@]+@[^@]+\.[^@]+', email):
@@ -152,6 +152,27 @@ def insert():
         else:
             msg = 'You have reached you post limit! 3'
     return render_template('home.html', msg=msg)
+
+@app.route('/pythonlogin/home/search', methods=['GET','POST'])
+def search():
+    msg = ''
+    if request.method == 'POST':
+        category_search  = request.form['search']
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT title, description, category, price  FROM item WHERE category = %s", (category_search,))
+        items = cursor.fetchall();
+
+        return render_template('home.html', items=items)
+
+    msg = 'Please enter valid category!'
+    return render_template('home.html', msg=msg)
+
+
+
+
+
+
 
 
 @app.route('/profile')
