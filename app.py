@@ -198,9 +198,104 @@ def review():
 
     return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/home/intitDB', methods=['GET','POST'])
+def initDB():
+    msg = ''
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Create the user table
+    cursor.execute('CREATE TABLE IF NOT EXISTS user ('
+                   'username VARCHAR(255) NOT NULL PRIMARY KEY,'
+                   'password VARCHAR(255),'
+                   'firstName VARCHAR(255),'
+                   'lastName VARCHAR(255),'
+                   'email VARCHAR(255) UNIQUE'
+                   ')')
+
+    # Create the item table
+    cursor.execute('CREATE TABLE IF NOT EXISTS item ('
+                   'item_id INT AUTO_INCREMENT PRIMARY KEY,'
+                   'date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+                   'title VARCHAR(255) NOT NULL,'
+                   'description TEXT,'
+                   'category VARCHAR(255),'
+                   'price INT,'
+                   'user_id VARCHAR(255) NOT NULL,'
+                   'FOREIGN KEY (user_id) REFERENCES user(username)'
+                   ')')
+
+    # Create the category_review table
+    cursor.execute('CREATE TABLE IF NOT EXISTS category_review ('
+                   'review_id INT AUTO_INCREMENT PRIMARY KEY,'
+                   'report_date DATE,'
+                   'rating ENUM("excellent", "good", "fair", "poor"),'
+                   'description TEXT,'
+                   'item_id INT,'
+                   'user_id VARCHAR(255),'
+                   'FOREIGN KEY (item_id) REFERENCES item(item_id),'
+                   'FOREIGN KEY (user_id) REFERENCES user(username)'
+                   ')')
+
+    # Example data for the user table
+    cursor.execute("INSERT INTO user (username, password, firstName, lastName, email) VALUES (%s, %s, %s, %s, %s)",
+                   ("user1", "password1", "John", "Doe", "jd@yahoo.com"))
+    cursor.execute("INSERT INTO user (username, password, firstName, lastName, email) VALUES (%s, %s, %s, %s, %s)",
+                   ("user2", "password2", "Jane", "Smith", "js@gmail.com"))
+    cursor.execute("INSERT INTO user (username, password, firstName, lastName, email) VALUES (%s, %s, %s, %s, %s)",
+                   ("user3", "password3", "Alice", "Johnson", "aj@hotmail.com"))
+    cursor.execute("INSERT INTO user (username, password, firstName, lastName, email) VALUES (%s, %s, %s, %s, %s)",
+                   ("user4", "password4", "Bob", "Brown", "bb@gmail.com"))
+    cursor.execute("INSERT INTO user (username, password, firstName, lastName, email) VALUES (%s, %s, %s, %s, %s)",
+                   ("user5", "password5", "Eva", "Davis", "ed@yahoo.com"))
+
+    # Example data for the item table
+    cursor.execute("INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("Smartphone", "This is the new iPhone X", "apple", 1000, "user1"))
+    cursor.execute("INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("Laptop", "High-performance laptop with SSD", "electronic", 1200, "user2"))
+    cursor.execute("INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("Headphones", "Noise-canceling headphones", "audio", 250, "user3"))
+    cursor.execute("INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("Tablet", "Compact and portable tablet", "tablet", 500, "user4"))
+    cursor.execute("INSERT INTO item (title, description, category, price, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("Smartwatch", "Track your activities with this smartwatch", "watch", 150, "user5"))
+
+    # Example data for the category_review table
+    cursor.execute("INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("2023-11-04", "good", "This is a great smartphone.", 1, "user2"))
+    cursor.execute("INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("2023-11-04", "excellent", "I love this laptop!", 2, "user1"))
+    cursor.execute("INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("2023-11-04", "fair", "These headphones are decent.", 3, "user4"))
+    cursor.execute("INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("2023-11-04", "good", "Nice tablet for the price.", 4, "user3"))
+    cursor.execute("INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                   ("2023-11-04", "fair", "Smartwatch is okay.", 5, "user5"))
+
+    mysql.connection.commit()
+
+    return render_template('home.html', msg=msg)
 
 
-        #cursor.execute('INSERT INTO user VALUES (%s, %s,%s,%s,%s)', (username,password,firstname,lastname,email))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

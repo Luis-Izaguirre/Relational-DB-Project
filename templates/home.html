@@ -80,8 +80,14 @@
     <button id="save-button">Submit Rating</button>
 </div>
 </form>
+<br><br><br>
 
-<br><br><br><br><br><br><br><br><br>
+<h1>Initialize Database</h1>
+<form method="POST" action="{{ url_for('initDB')}}">
+    <button type="submit">Initialize Database</button>
+</form>
+
+<br><br><br>
 
 <!-- JavaScipt code to control the pop-up -->
 <script>
