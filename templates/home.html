@@ -7,7 +7,6 @@
 <h2>Home Page</h2>
 <p>Welcome back, {{ username }}!</p>
 
-
 <form action="{{ url_for('insert') }}" method="post">
     <fieldset>
         <div class="form-group">
@@ -49,13 +48,15 @@
 <div class="container1">
 <table bgcolor="black" width="700" class="centered-table1">
     <tr bgcolor="grey">
+        <th width="100">Item ID</th>
         <th width="100">Title</th>
         <th width="100">Description</th>
         <th width="100">Category</th>
         <th width="100">Price</th>
     </tr>
     {% for item in items %}
-    <tr bgcolor="#d3d3d3" align="center">
+    <tr bgcolor="#d3d3d3" align="center" class="table-row">
+        <td>{{ item.item_id }} </td>
         <td>{{ item.title }}</td>
         <td>{{ item.description }}</td>
         <td>{{ item.category }}</td>
@@ -66,16 +67,19 @@
 </div>
 
 <!-- Hidden dropdown -->
-<div class="rating-dropdown" style="display: none;">
-    <select id="rating">
-        <option value="1">excellent</option>
-        <option value="2">good</option>
-        <option value="3">fair</option>
-        <option value="4">poor</option>
+<form action="{{ url_for('review') }}" method="post">
+<div class="rating-dropdown">
+    <input type="number" id="specific-id" placeholder="^ Enter a specific ID (numbers only) ^" name="specific-id"/>
+    <select id="rating" name="rating">
+        <option value="excellent">excellent</option>
+        <option value="good">good</option>
+        <option value="fair">fair</option>
+        <option value="poor">poor</option>
     </select>
-    <textarea id="descript" placeholder="Enter a description"></textarea>
-    <button id="save-button">Save</button>
+    <textarea id="descript" placeholder="Enter a description" name="descript"></textarea>
+    <button id="save-button">Submit Rating</button>
 </div>
+</form>
 
 <br><br><br><br><br><br><br><br><br>
 
@@ -87,7 +91,19 @@
         popup.style.display = 'block';
         popup.innerHTML = message;
     }
-    */
+
+    $(document).ready(function(){
+        $(document.body).on("click", "tr[data-category-id]", function() {
+            //Get the category ID associated with the clicked row
+            var categoryId = $(this).data("category-id");
+
+            //Show the hidden dropdown and textarea for the selected category
+            $(".rating-dropdown").hide();
+            $(".rating-dropdown[data-category-id= '" + categoryId + "']").show();
+        });
+       });
+ */
+
 </script>
 
 

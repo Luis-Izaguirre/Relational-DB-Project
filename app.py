@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import MySQLdb.cursors, re, hashlib
-import bcrypt 
+import bcrypt
 
 app = Flask(__name__)
 
@@ -31,12 +31,12 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        
+
         # retrieve the hashed password
         hash = password + app.secret_key
         hash = hashlib.sha1(hash.encode())
         password = hash.hexdigest()
-        
+
 
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -76,7 +76,7 @@ def register():
 
     #Check if "username".. Post request exists (user submitted form)
     if request.method == 'POST' and 'username' in request.form and 'firstname' in request.form and 'lastname' in request.form and 'email' in request.form and 'password' in request.form:
-        
+
         # Create variables for easy access
        username = request.form['username']
        firstname = request.form['firstname']
@@ -160,7 +160,7 @@ def search():
         category_search  = request.form['search']
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT title, description, category, price  FROM item WHERE category = %s", (category_search,))
+        cursor.execute("SELECT item_id, title, description, category, price  FROM item WHERE category = %s", (category_search,))
         items = cursor.fetchall();
 
         return render_template('home.html', items=items)
@@ -168,8 +168,39 @@ def search():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/home/review', methods=['GET','POST'])
+def review():
+    msg = ''
+    if 'loggedin' in session:
+        review_id = request.form['specific-id'] #item_id
+        review_rating = request.form['rating']
+        review_description = request.form['descript']
+        username = session['username']
 
 
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT COUNT(*) FROM category_review WHERE user_id = %s AND DATE(report_date) = %s", (username, datetime.now().date()))
+        review_count = cursor.fetchone()['COUNT(*)']
+
+        if review_count >=3:
+            msg = 'You have reached the daily limit for reviews'
+
+        cursor.execute('SELECT user_id FROM item WHERE item_id = %s', (review_id,))
+        review_owner = cursor.fetchone()['user_id']
+
+        if review_owner == username:
+            msg = 'You cannot review your own items.'
+
+        if review_count < 3 and review_owner != username:
+            cursor.execute('INSERT INTO category_review (report_date, rating, description, item_id, user_id) VALUES (%s, %s, %s, %s, %s)',( datetime.now().date(),review_rating, review_description, review_id, username))
+            mysql.connection.commit()
+            msg = 'Review submitted successfully!'
+
+    return render_template('home.html', msg=msg)
+
+
+
+        #cursor.execute('INSERT INTO user VALUES (%s, %s,%s,%s,%s)', (username,password,firstname,lastname,email))
 
 
 
