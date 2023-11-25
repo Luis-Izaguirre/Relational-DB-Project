@@ -229,6 +229,36 @@ def partOne():
 
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
+@app.route('/pythonlogin/home/partTwo', methods=['GET','POST'])
+def partTwo():
+    msg = ''
+    if request.method == 'POST':
+        targetUsername = request.form['username']
+        print(targetUsername)
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT item.item_id as newItem, item.user_id as user, item.title as title, item.description as description, item.date_created as date, item.price as price FROM item JOIN category_review ON item.item_id = category_review.item_id WHERE item.user_id = %s AND category_review.rating IN ('excellent','good');", (targetUsername,))
+        items3 = cursor.fetchall()
+        print(items3)
+        return render_template('home.html', items3=items3)
+
+    msg = 'Please enter valid category!'
+    return render_template('home.html', msg=msg)
+
+@app.route('/pythonlogin/home/partThree', methods=['GET','POST'])
+def partThree():
+    msg = ''
+    if request.method == 'POST':
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT user_id as user, date_created as date FROM item WHERE date_created = '2023-11-05 21:35:39';")
+        items4 = cursor.fetchall()
+        print(items4)
+        return render_template('home.html', items4=items4)
+
+    msg = 'Please enter valid category!'
+    return render_template('home.html', msg=msg)
+
 
 
 
