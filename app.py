@@ -212,7 +212,23 @@ def priceCompare():
         msg = 'all price displayed!'
         return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/home/partOne', methods=['GET','POST'])
+def partOne():
+    msg = ''
+    if request.method == 'POST':
+        category1 = request.form['category1']
+        print(category1)
+        category2 = request.form['category2']
+        print(category2)
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT user_id, DATE(date_created) as created_date FROM item WHERE category IN (%s, %s) GROUP BY user_id, created_date HAVING COUNT(DISTINCT category) = 2 AND COUNT(*) >=2;", (category1, category2))
+        items2 = cursor.fetchall()
 
+        print(items2)
+        return render_template('home.html', items2=items2)
+
+    msg = 'Please enter valid category!'
+    return render_template('home.html', msg=msg)
 
 
 
