@@ -1,0 +1,261 @@
+{% extends 'layout.html'%} <!--Template For Logged In Users-->
+
+{% block title %}Home{% endblock %}
+
+<!-- Also '%' allows for operations and inheritence in Jinja Code-->
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, {{ username }}!</p>
+
+<form action="{{ url_for('insert') }}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="item">Title:</label>
+            <input id="item" type="text" placeholder="Smartphone" name="item" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input id="description" type="text" name="description" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input id="category" type="text" name="category" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input id="price" type="text" name="price" required>
+        </div>
+    </fieldset>
+    <input type="submit" value="Submit">
+</form>
+
+<div id="msg" style="display: none;">
+    <p>{{ msg }}</p>
+</div>
+
+<form action="{{ url_for('search')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">Category:  <input id="search" type="text" name="search" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container1">
+<table bgcolor="black" width="700" class="centered-table1">
+    <tr bgcolor="grey">
+        <th width="100">Item ID</th>
+        <th width="100">Title</th>
+        <th width="100">Description</th>
+        <th width="100">Category</th>
+        <th width="100">Price</th>
+    </tr>
+    {% for item in items %}
+    <tr bgcolor="#d3d3d3" align="center" class="table-row">
+        <td>{{ item.item_id }} </td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.category }}</td>
+        <td>${{ item.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+<!-- Hidden dropdown -->
+<form action="{{ url_for('review') }}" method="post">
+<div class="rating-dropdown">
+    <input type="number" id="specific-id" placeholder="^ Enter a specific ID (numbers only) ^" name="specific-id"/>
+    <select id="rating" name="rating">
+        <option value="excellent">excellent</option>
+        <option value="good">good</option>
+        <option value="fair">fair</option>
+        <option value="poor">poor</option>
+    </select>
+    <textarea id="descript" placeholder="Enter a description" name="descript"></textarea>
+    <button id="save-button">Submit Rating</button>
+</div>
+</form>
+<br><br><br>
+
+<!------------------------------------------------------- Phase 3 Below --------------------------------------------->
+<!--list the most expensive items in each category-->
+<h1>Initialize Database</h1>
+<form method="POST" action="{{ url_for('priceCompare')}}">
+    <button type="submit">Initialize Database</button>
+</form>
+<br>
+<hr>
+<br>
+
+<form action="{{ url_for('priceCompare')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">1. List the most expensive items in each category: </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container0">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Category</th>
+            <th width="100">Item ID</th>
+            <th width="100">Price</th>
+        </tr>
+        {% for item in itemss %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.category}}</td>
+            <td>{{ item.item_id }} </td>
+            <td>${{ item.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!--List the user who posted at leat two items.....-->
+<form action="{{ url_for('partOne')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">List the users who posted at least two items that were posted on the same day.<br><br>
+                Category1: <input id="category1" type="text" name="category1" required>
+                Category2: <input id="category2" type="text" name="category2" required>
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container1">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+            <th width="100">Date Created</th>
+        </tr>
+        {% for item in items2 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.user_id }}</td>
+            <td>{{ item.created_date }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!--List all the items posted by user X, such that all the commnents are Excellent or good for these items.....-->
+<form action="{{ url_for('partTwo')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">List all the items posted by user X, such that all the commnents are "Excellent" or "good" for these items.<br><br>
+                Username: <input id="username" type="text" name="username" required>
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container2">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Item ID</th>
+            <th width="100">Username or Seller</th>
+            <th width="100">Title</th>
+            <th width="100">Description</th>
+            <th width="100">Date Posted</th>
+            <th width="100">Price</th>
+        </tr>
+        {% for item in items3 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.newItem }}</td>
+            <td>{{ item.user }} </td>
+            <td>{{ item.title }} </td>
+            <td>{{ item.description }} </td>
+            <td>{{ item.date }} </td>
+            <td>{{ item.price }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!--List the users who posted the most number of items on a specific date like 5/1/2023; if there is
+a tie, list all the users who have a tie. The specific date can be hard coded into your SQL select
+query or given by the user.-->
+<form action="{{ url_for('partThree')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">
+                List the users who posted the most number of items on a specific date like 5/11/2023.<br> If there is
+                a tie, list all the users who have a tie:
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+            <th width="100">Date Of Submission</th>
+        {% for item in items4 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.user }} </td>
+            <td>{{ item.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--8List the other users who are favorited by both users X, and Y. Usernames X and Y will be
+selected from dropdown menus by the instructor......-->
+
+
+
+
+<br><br><br>
+
+
+<!-- JavaScipt code to control the pop-up -->
+<script>
+    /*Function to display a successful submission pop-up
+    function showPopup(message){
+        const popup = document.getElementById('msg');
+        popup.style.display = 'block';
+        popup.innerHTML = message;
+    }
+
+    $(document).ready(function(){
+        $(document.body).on("click", "tr[data-category-id]", function() {
+            //Get the category ID associated with the clicked row
+            var categoryId = $(this).data("category-id");
+
+            //Show the hidden dropdown and textarea for the selected category
+            $(".rating-dropdown").hide();
+            $(".rating-dropdown[data-category-id= '" + categoryId + "']").show();
+        });
+       });
+ */
+
+</script>
+
+
+{% endblock %}
