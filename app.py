@@ -198,6 +198,54 @@ def review():
 
     return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/home/priceCompare', methods=['GET','POST'])
+def priceCompare():
+        msg = ''
+        if request.method == 'POST':
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute("SELECT DISTINCT item_id, title, price, user_id, category FROM item as t1 WHERE price = ( SELECT max(price) FROM item as t2 WHERE t1.category = t2.category);")
+            #Fetch all rows instead of individual fetching of each column
+            itemss = cursor.fetchall()
+
+            return render_template('home.html', itemss=itemss)
+
+        msg = 'all price displayed!'
+        return render_template('home.html', msg=msg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/pythonlogin/home/intitDB', methods=['GET','POST'])
 def initDB():
     msg = ''
@@ -276,35 +324,6 @@ def initDB():
     mysql.connection.commit()
 
     return render_template('home.html', msg=msg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route('/profile')
-def profile():
-    return 'Profile Page'
-
 
 if __name__ == '__main__':
     app.run(debug=True)
