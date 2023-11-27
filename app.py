@@ -168,6 +168,7 @@ def search():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+
 @app.route('/pythonlogin/home/review', methods=['GET','POST'])
 def review():
     msg = ''
@@ -259,36 +260,10 @@ def partThree():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/favorite', methods=['GET','POST'])
+def favorite():
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return render_template('favorite.html')
 
 
 

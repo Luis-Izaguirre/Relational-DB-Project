@@ -69,7 +69,7 @@
 <!-- Hidden dropdown -->
 <form action="{{ url_for('review') }}" method="post">
 <div class="rating-dropdown">
-    <input type="number" id="specific-id" placeholder="^ Enter a specific ID (numbers only) ^" name="specific-id"/>
+    <input type="number" id="specific-id" placeholder="Enter a specific ID (numbers only)" name="specific-id"/>
     <select id="rating" name="rating">
         <option value="excellent">excellent</option>
         <option value="good">good</option>
@@ -122,7 +122,7 @@
 <form action="{{ url_for('partOne')}}" method="post">
     <fieldset>
         <div class="form-group">
-            <label for="search">List the users who posted at least two items that were posted on the same day.<br><br>
+            <label for="search">2. List the users who posted at least two items that were posted on the same day.<br><br>
                 Category1: <input id="category1" type="text" name="category1" required>
                 Category2: <input id="category2" type="text" name="category2" required>
             </label>
@@ -149,7 +149,7 @@
 <form action="{{ url_for('partTwo')}}" method="post">
     <fieldset>
         <div class="form-group">
-            <label for="search">List all the items posted by user X, such that all the commnents are "Excellent" or "good" for these items.<br><br>
+            <label for="search">3. List all the items posted by user X, such that all the commnents are "Excellent" or "good" for these items.<br><br>
                 Username: <input id="username" type="text" name="username" required>
             </label>
         </div>
@@ -167,6 +167,7 @@
             <th width="100">Date Posted</th>
             <th width="100">Price</th>
         </tr>
+
         {% for item in items3 %}
         <tr bgcolor="#d3d3d3" align="center" class="table-row">
             <td>{{ item.newItem }}</td>
@@ -186,7 +187,7 @@ query or given by the user.-->
     <fieldset>
         <div class="form-group">
             <label for="search">
-                List the users who posted the most number of items on a specific date like 5/11/2023.<br> If there is
+                4. List the users who posted the most number of items on a specific date like 5/11/2023.<br> If there is
                 a tie, list all the users who have a tie:
             </label>
         </div>

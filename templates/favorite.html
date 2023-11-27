@@ -1,0 +1,61 @@
+{% extends 'layout.html'%} <!--Template For Logged In Users-->
+
+{% block title %}Home{% endblock %}
+
+<!-- Also '%' allows for operations and inheritence in Jinja Code-->
+{% block content %}
+<h2>Favorite Page</h2>
+<p>Welcome back, {{ username }}!</p>
+
+<!--My Favorite Seller Section-->
+<form action="{{ url_for('partThree')}}" method="post">
+        <div class="form-group">
+            <label>
+               Choose For Favorite Sellers:
+            </label>
+        </div>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+            <th width="100">Date Of Submission</th>
+            {% for item in items4 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.user }} </td>
+            <td>{{ item.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- My Favorite Item Section-->
+<form action="{{ url_for('partThree')}}" method="post">
+        <div class="form-group">
+            <label>
+                Choose For Favorite Item(s):
+            </label>
+        </div>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+            <th width="100">Date Of Submission</th>
+            {% for item in items4 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.user }} </td>
+            <td>{{ item.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+
+{% endblock %}
