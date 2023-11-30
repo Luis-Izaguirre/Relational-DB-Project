@@ -1,0 +1,40 @@
+
+
+<!-- Part 5 for home.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Common Favorites</title>
+</head>
+<body>
+<h2>Select Users to Find Common Favorites</h2>
+<form method="POST">
+    <label for="userX">Select User X:</label>
+    x<select name="userX" id="userX">
+        {% for user in users %}
+        <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="userY">Select User Y:</label>
+    <select name="userY" id="userY">
+        {% for user in users %}
+        <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Find Common Favorites</button>
+</form>
+
+{% if common_favorites %}
+<h3>Common Favorite Users:</h3>
+<ul>
+    {% for favorite in common_favorites %}
+    <li>{{ favorite.FavoriteUserID }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>
+-->
+

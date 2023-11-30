@@ -85,7 +85,7 @@
 <!------------------------------------------------------- Phase 3 Below --------------------------------------------->
 <!--list the most expensive items in each category-->
 <h1>Initialize Database</h1>
-<form method="POST" action="{{ url_for('priceCompare')}}">
+<form method="POST" action="{{ url_for('initDB')}}">
     <button type="submit">Initialize Database</button>
 </form>
 <br>
@@ -208,7 +208,6 @@ query or given by the user.-->
         {% endfor %}
     </table>
 </div>
-
 
 
 

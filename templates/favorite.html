@@ -8,7 +8,7 @@
 <p>Welcome back, {{ username }}!</p>
 
 <!--My Favorite Seller Section-->
-<form action="{{ url_for('partThree')}}" method="post">
+<form action="{{ url_for('favorite')}}" method="post">
         <div class="form-group">
             <label>
                Choose For Favorite Sellers:
@@ -17,22 +17,42 @@
     <input type="submit" value="Search"/>
 </form>
 
-<div class="container3">
+<div class="container1">
     <table bgcolor="black" width="700" class="centered-table1">
         <tr bgcolor="grey">
             <th width="100">Username</th>
-            <th width="100">Date Of Submission</th>
-            {% for item in items4 %}
+            {% for item in users %}
         <tr bgcolor="#d3d3d3" align="center" class="table-row">
-            <td>{{ item.user }} </td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.username }} </td>
         </tr>
         {% endfor %}
     </table>
 </div>
 
-<!-- My Favorite Item Section-->
-<form action="{{ url_for('partThree')}}" method="post">
+
+<form action="{{ url_for('favSubmit')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="favorite">Submit a favorite user:  <input id="favorite" type="text" name="favorite" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Submit"/>
+</form>
+
+<form action="{{ url_for('favDelete')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="favDelete">Delete a favorite user:  <input id="favDelete" type="text" name="favDelete" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Delete"/>
+</form>
+
+<!-- My Favorite Item Section -->
+<br><br>
+
+
+<form action="{{ url_for('favItem')}}" method="post">
         <div class="form-group">
             <label>
                 Choose For Favorite Item(s):
@@ -44,18 +64,42 @@
 <div class="container3">
     <table bgcolor="black" width="700" class="centered-table1">
         <tr bgcolor="grey">
-            <th width="100">Username</th>
-            <th width="100">Date Of Submission</th>
-            {% for item in items4 %}
+            <th width="100">Item ID</th>
+            <th width="100">Date Of Creation</th>
+            <th width="100">Title</th>
+            <th width="100">Description</th>
+            <th width="100">Category</th>
+            <th width="100">Price</th>
+            {% for item in items %}
         <tr bgcolor="#d3d3d3" align="center" class="table-row">
-            <td>{{ item.user }} </td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.item_id }} </td>
+            <td>{{ item.date_created }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
         </tr>
         {% endfor %}
     </table>
 </div>
 
+<form action="{{ url_for('favSubmitItem')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="favSubmitItem">Submit a favorite item:  <input id="favSubmitItem" type="text" name="favSubmitItem" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Submit"/>
+</form>
 
+<form action="{{ url_for('favDeleteItem')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="favDeleteItem">Delete a favorite item:  <input id="favDeleteItem" type="text" name="favDeleteItem" required></label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Delete"/>
+</form>
 
 
 {% endblock %}

@@ -199,6 +199,9 @@ def review():
 
     return render_template('home.html', msg=msg)
 
+
+
+#-------------------------------PHASE 3 BELOW-------------------------------------------------------------------
 @app.route('/pythonlogin/home/priceCompare', methods=['GET','POST'])
 def priceCompare():
         msg = ''
@@ -230,6 +233,7 @@ def partOne():
 
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
+
 @app.route('/pythonlogin/home/partTwo', methods=['GET','POST'])
 def partTwo():
     msg = ''
@@ -260,13 +264,97 @@ def partThree():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+
+
+#-------------------------------FAVORITES WEB PAGE-------------------------------------------------------------------
 @app.route('/pythonlogin/favorite', methods=['GET','POST'])
 def favorite():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM user")
+    users = cursor.fetchall()
 
-    return render_template('favorite.html')
+    return render_template('favorite.html', users=users)
+
+
+@app.route('/pythonlogin/favSubmit', methods=['GET','POST'])
+def favSubmit():
+    msg = ''
+    if 'loggedin' in session and request.method == 'POST':
+        fav_sell = request.form['favorite']
+        username = session['username']
+
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO favorite_seller (user_id, seller_id) VALUES (%s, %s)', (username,fav_sell,))
+        mysql.connection.commit()
+        msg = 'Favorite seller added successfully!'
+
+    return render_template('favorite.html', msg=msg)
+
+@app.route('/pythonlogin/favDelete', methods=['GET','POST'])
+def favDelete():
+    msg = ''
+    if 'loggedin' in session and request.method == 'POST':
+        fav_sell = request.form['favDelete']
+        username = session['username']
+
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('DELETE FROM favorite_seller WHERE user_id = %s AND seller_id = %s', (username,fav_sell,))
+        mysql.connection.commit()
+        msg = 'Favorite seller added successfully!'
+
+    return render_template('favorite.html', msg=msg)
+
+@app.route('/pythonlogin/favItem', methods=['GET','POST'])
+def favItem():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM item")
+    items = cursor.fetchall()
+
+    return render_template('favorite.html', items=items)
 
 
 
+@app.route('/pythonlogin/favSubmitItem', methods=['GET','POST'])
+def favSubmitItem():
+    msg = ''
+    if 'loggedin' in session and request.method == 'POST':
+        fav_item = request.form['favSubmitItem']
+        username = session['username']
+
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO favorite_item (user_id, item_id) VALUES (%s, %s)', (username,fav_item,))
+        mysql.connection.commit()
+        msg = 'Favorite seller added successfully!'
+
+    return render_template('favorite.html', msg=msg)
+
+@app.route('/pythonlogin/favDeleteItem', methods=['GET','POST'])
+def favDeleteItem():
+    msg = ''
+    if 'loggedin' in session and request.method == 'POST':
+        fav_item = request.form['favDeleteItem']
+        username = session['username']
+
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('DELETE FROM favorite_item WHERE user_id = %s AND item_id = %s', (username,fav_item,))
+        mysql.connection.commit()
+        msg = 'Favorite seller added successfully!'
+
+    return render_template('favorite.html', msg=msg)
+
+
+
+
+
+
+
+
+
+#-------------------------------INITIALIZE DB-------------------------------------------------------------------
 @app.route('/pythonlogin/home/intitDB', methods=['GET','POST'])
 def initDB():
     msg = ''
@@ -285,7 +373,7 @@ def initDB():
     # Create the item table
     cursor.execute('CREATE TABLE IF NOT EXISTS item ('
                    'item_id INT AUTO_INCREMENT PRIMARY KEY,'
-                   'date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+                   'date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,'
                    'title VARCHAR(255) NOT NULL,'
                    'description TEXT,'
                    'category VARCHAR(255),'
