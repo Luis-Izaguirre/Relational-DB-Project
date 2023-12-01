@@ -264,6 +264,7 @@ def partThree():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+
 @app.route('/pythonlogin/home/partFour', methods=['GET','POST'])
 def partFour():
     msg = ''
@@ -288,13 +289,29 @@ def partSix():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         # Select users who never posted any "excellent" items
-        cursor.execute("SELECT DISTINCT u.username FROM user u JOIN item i ON u.username = i.user_id JOIN category_review cr ON i.item_id = cr.item_id WHERE cr.rating = 'excellent' GROUP BY u.username HAVING COUNT(DISTINCT i.item_id) = 1 AND COUNT(cr.review_id) >= 3;")
+        cursor.execute("""SELECT DISTINCT u.username
+FROM user u
+LEFT JOIN item i ON u.username = i.user_id
+LEFT JOIN category_review cr ON i.item_id = cr.item_id
+WHERE i.item_id IS NULL OR i.item_id NOT IN (
+    SELECT i.item_id
+    FROM item i
+    JOIN category_review cr ON i.item_id = cr.item_id
+    WHERE cr.rating = 'excellent'
+    GROUP BY i.item_id
+    HAVING COUNT(DISTINCT cr.user_id) >= 3
+)
+GROUP BY u.username;""")
         users_no_excellent_items = cursor.fetchall()
 
         return render_template('home.html', users_no_excellent_items=users_no_excellent_items)
 
     msg = 'Please enter a valid category!'
     return render_template('home.html', msg=msg)
+
+
+
+
 
 
 @app.route('/pythonlogin/home/partSeven', methods=['GET','POST'])
