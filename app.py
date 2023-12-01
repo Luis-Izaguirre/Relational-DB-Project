@@ -361,62 +361,22 @@ def partTen():
 
         # List a user pair (A, B) such that they always gave each other "excellent" reviews for every single item they posted.
         cursor.execute("""
-            SELECT DISTINCT A.username AS UserA, B.username AS UserB
-FROM user A
-JOIN category_review AR ON A.username = AR.user_id
-JOIN item I ON AR.item_id = I.item_id
-JOIN category_review BR ON I.user_id = BR.user_id
-JOIN user B ON B.username = BR.user_id
-WHERE AR.rating = 'excellent' AND BR.rating = 'excellent'
-AND NOT EXISTS (
-    SELECT 1
-    FROM item BI
-    WHERE BI.user_id = B.username
-    AND BI.item_id NOT IN (
-        SELECT IR.item_id
-        FROM category_review IRA
-        JOIN item IR ON IRA.item_id = IR.item_id
-        WHERE IRA.user_id = A.username
-        AND IRA.rating = 'excellent'
-    )
-)
-AND NOT EXISTS (
-    SELECT 1
-    FROM item AI
-    WHERE AI.user_id = A.username
-    AND AI.item_id NOT IN (
-        SELECT IR.item_id
-        FROM category_review IRB
-        JOIN item IR ON IRB.item_id = IR.item_id
-        WHERE IRB.user_id = B.username
-        AND IRB.rating = 'excellent'
-    )
-);
-        """)
+        SELECT A.username AS user_A, B.username AS user_B
+        FROM user A
+        JOIN category_review RA ON A.username = RA.user_id AND RA.rating = 'excellent'
+        JOIN item IA ON RA.item_id = IA.item_id
+        JOIN category_review RB ON IA.user_id = RB.user_id AND RB.rating = 'excellent'
+        JOIN user B ON RB.user_id = B.username
+        GROUP BY A.username, B.username
+        HAVING COUNT(DISTINCT IA.item_id) = (SELECT COUNT(*) FROM item WHERE user_id = A.username)
+           AND COUNT(DISTINCT RB.item_id) = (SELECT COUNT(*) FROM item WHERE user_id = B.username);
+            """)
         excellent_review_pair = cursor.fetchall()
 
         return render_template('home.html', excellent_review_pair=excellent_review_pair)
 
     msg = 'Please enter a valid category!'
     return render_template('home.html', msg=msg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #-------------------------------FAVORITES WEB PAGE-------------------------------------------------------------------
@@ -498,13 +458,6 @@ def favDeleteItem():
         msg = 'Favorite seller added successfully!'
 
     return render_template('favorite.html', msg=msg)
-
-
-
-
-
-
-
 
 
 #-------------------------------INITIALIZE DB-------------------------------------------------------------------

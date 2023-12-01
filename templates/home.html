@@ -85,7 +85,7 @@
 <!------------------------------------------------------- Phase 3 Below --------------------------------------------->
 <!--list the most expensive items in each category-->
 <h1>Initialize Database</h1>
-<form method="POST" action="{{ url_for('initDB')}}">
+<form method="POST" action="{{ url_for('priceCompare')}}">
     <button type="submit">Initialize Database</button>
 </form>
 <br>
@@ -360,11 +360,11 @@ three reviews are excellent. -->
             <th width="100">User A</th>
             <th width="100">User B</th>
         </tr>
-        {% for user_pair in excellent_review_pair %}
+        {% for item in excellent_review_pair %}
         <!-- Assuming excellent_review_pair is the correct variable -->
         <tr bgcolor="#d3d3d3" align="center" class="table-row">
-            <td>{{ user_pair.user_a }}</td>
-            <td>{{ user_pair.user_b }}</td>
+            <td>{{ item.user_A }}</td>
+            <td>{{ item.user_B }}</td>
         </tr>
         {% endfor %}
     </table>
