@@ -264,6 +264,159 @@ def partThree():
     msg = 'Please enter valid category!'
     return render_template('home.html', msg=msg)
 
+@app.route('/pythonlogin/home/partFour', methods=['GET','POST'])
+def partFour():
+    msg = ''
+    if request.method == 'POST':
+        X = request.form['valueX']
+        Y = request.form['valueY']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT username AS favored_user FROM user WHERE username IN ( SELECT fav1.seller_id FROM favorite_seller AS fav1 JOIN favorite_seller AS fav2 ON fav1.seller_id = fav2.seller_id WHERE fav1.user_id = %s AND fav2.user_id = %s);", (X, Y))
+        items5 = cursor.fetchall()
+
+        return render_template('home.html', items5=items5)
+
+    msg = 'Please try again!'
+    return render_template('home.html', msg=msg)
+
+#FIX ME, ask Vincent what the database should look like
+@app.route('/pythonlogin/home/partSix', methods=['GET', 'POST'])
+def partSix():
+    msg = ''
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # Select users who never posted any "excellent" items
+        cursor.execute("SELECT DISTINCT u.username FROM user u JOIN item i ON u.username = i.user_id JOIN category_review cr ON i.item_id = cr.item_id WHERE cr.rating = 'excellent' GROUP BY u.username HAVING COUNT(DISTINCT i.item_id) = 1 AND COUNT(cr.review_id) >= 3;")
+        users_no_excellent_items = cursor.fetchall()
+
+        return render_template('home.html', users_no_excellent_items=users_no_excellent_items)
+
+    msg = 'Please enter a valid category!'
+    return render_template('home.html', msg=msg)
+
+
+@app.route('/pythonlogin/home/partSeven', methods=['GET','POST'])
+def partSeven():
+    msg = ''
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # Select users who haven't posted a "poor" review
+        cursor.execute("SELECT DISTINCT u.username FROM user u LEFT JOIN category_review cr ON u.username = cr.user_id WHERE cr.rating IS NULL OR cr.rating <> 'poor';")
+        users_without_poor_review = cursor.fetchall()
+
+        return render_template('home.html', users_without_poor_review=users_without_poor_review)
+
+    msg = 'Please enter a valid category!'
+    return render_template('home.html', msg=msg)
+
+
+@app.route('/pythonlogin/home/partEight', methods=['GET', 'POST'])
+def partEight():
+    msg = ''
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # Select users who posted only "poor" reviews
+        cursor.execute("SELECT DISTINCT u.username FROM user u WHERE u.username IN (SELECT cr.user_id FROM category_review cr GROUP BY cr.user_id HAVING COUNT(cr.review_id) > 0 AND COUNT(DISTINCT cr.rating) = 1 AND MAX(cr.rating) = 'poor');")
+        poor_review_users1 = cursor.fetchall()
+
+        return render_template('home.html', poor_review_users1=poor_review_users1)
+
+    msg = 'Please enter a valid category!'
+    return render_template('home.html', msg=msg)
+
+
+@app.route('/pythonlogin/home/part9', methods=['GET', 'POST'])
+def part9():
+    msg = ''
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # Select users whose items have not received any "poor" reviews
+        cursor.execute("SELECT DISTINCT u.username FROM user u "
+                       "LEFT JOIN item i ON u.username = i.user_id "
+                       "LEFT JOIN category_review cr ON i.item_id = cr.item_id "
+                       "WHERE cr.rating IS NULL OR cr.rating <> 'poor';")
+        users_without_poor_reviews = cursor.fetchall()
+
+        return render_template('home.html', users_without_poor_reviews=users_without_poor_reviews)
+
+
+    msg = 'Please enter a valid category!'
+    return render_template('home.html', msg=msg)
+
+
+@app.route('/pythonlogin/home/partTen', methods=['GET', 'POST'])
+def partTen():
+    msg = ''
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # List a user pair (A, B) such that they always gave each other "excellent" reviews for every single item they posted.
+        cursor.execute("""
+            SELECT DISTINCT A.username AS UserA, B.username AS UserB
+FROM user A
+JOIN category_review AR ON A.username = AR.user_id
+JOIN item I ON AR.item_id = I.item_id
+JOIN category_review BR ON I.user_id = BR.user_id
+JOIN user B ON B.username = BR.user_id
+WHERE AR.rating = 'excellent' AND BR.rating = 'excellent'
+AND NOT EXISTS (
+    SELECT 1
+    FROM item BI
+    WHERE BI.user_id = B.username
+    AND BI.item_id NOT IN (
+        SELECT IR.item_id
+        FROM category_review IRA
+        JOIN item IR ON IRA.item_id = IR.item_id
+        WHERE IRA.user_id = A.username
+        AND IRA.rating = 'excellent'
+    )
+)
+AND NOT EXISTS (
+    SELECT 1
+    FROM item AI
+    WHERE AI.user_id = A.username
+    AND AI.item_id NOT IN (
+        SELECT IR.item_id
+        FROM category_review IRB
+        JOIN item IR ON IRB.item_id = IR.item_id
+        WHERE IRB.user_id = B.username
+        AND IRB.rating = 'excellent'
+    )
+);
+        """)
+        excellent_review_pair = cursor.fetchall()
+
+        return render_template('home.html', excellent_review_pair=excellent_review_pair)
+
+    msg = 'Please enter a valid category!'
+    return render_template('home.html', msg=msg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #-------------------------------FAVORITES WEB PAGE-------------------------------------------------------------------

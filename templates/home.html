@@ -209,27 +209,166 @@ query or given by the user.-->
     </table>
 </div>
 
+<!-- 5. List the other users who are favorited by both users X, and Y. Usernames X and Y will
+be selected from dropdown menus by the instructor. In other words, the user (or users)
+C are the favorite for both X and Y.-->
+<form action="{{ url_for('partFour')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">5. List the other users who are favorited by both X, and Y.<br><br>
+                Insert User X: <input id="valueX" type="text" name="valueX" required>
+                Insert User Y: <input id="valueY" type="text" name="valueY" required>
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search"/>
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username(s)</th>
+            {% for item in items5 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.favored_user }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!--PART 6-->
+<!--Display all the users who never posted any "excellent" items: an item is excellent if at least
+three reviews are excellent. -->
+<form action="{{ url_for('partSix')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">
+                6. Display all users who never posted any "excellent" items:
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search" />
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+        </tr>
+        {% for user in users_no_excellent_items %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ user.username }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!--PART 7-->
+<!--Display all users who never posted a "poor" review.-->
+<form action="{{ url_for('partSeven') }}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label>
+                7. Display all users who never posted a "poor" review:
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search" />
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+        </tr>
+        {% for item in users_without_poor_review %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ item.username }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!--PART 8-->
+<!--Display all the users who posted some reviews, but each of them is "poor".-->
+<form action="{{ url_for('partEight')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">
+                8. Display users who posted only "poor" reviews:
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search" />
+</form>
+
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+        </tr>
+        {% for user in poor_review_users1 %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ user.username }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 
+<!--PART 9-->
+<!--Display those users such that each item they posted so far never received any "poor" reviews.-->
 
+<form action="{{ url_for('part9')}}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">
+                9. Display users whose items have not received any "poor" reviews:
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="Search" />
+</form>
 
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">Username</th>
+        </tr>
+        {% for user in users_without_poor_reviews %}
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ user.username }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
+<form action="{{ url_for('partTen') }}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="search">
 
+                10. List a user pair (A, B) such that they always gave each other "excellent" reviews for every single item they posted:
+            </label>
+        </div>
+    </fieldset><input type="submit" value="Search" />
+</form>
 
-
-
-
-
-
-
-
-
-
-<!--8List the other users who are favorited by both users X, and Y. Usernames X and Y will be
-selected from dropdown menus by the instructor......-->
-
-
-
+<div class="container3">
+    <table bgcolor="black" width="700" class="centered-table1">
+        <tr bgcolor="grey">
+            <th width="100">User A</th>
+            <th width="100">User B</th>
+        </tr>
+        {% for user_pair in excellent_review_pair %}
+        <!-- Assuming excellent_review_pair is the correct variable -->
+        <tr bgcolor="#d3d3d3" align="center" class="table-row">
+            <td>{{ user_pair.user_a }}</td>
+            <td>{{ user_pair.user_b }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 <br><br><br>
 
